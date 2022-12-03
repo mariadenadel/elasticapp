@@ -1,0 +1,40 @@
+# Ignore bundler config.
+/.bundle
+.DS_Store'
+**/.DS_Store
+# Ignore all logfiles and tempfiles.
+.idea
+.cache
+/log/*
+/tmp/*
+!/log/.keep
+!/tmp/.keep
+/docker/persistent/*
+
+# Ignore uploaded files in development
+/storage/*
+
+/node_modules
+/yarn-error.log
+/dump.rdb
+
+/public/assets
+.byebug_history
+
+# Ignore master key for decrypting credentials and more.
+/config/master.key
+/coverage.data
+/coverage/
+.env.development
+.env
+stripe-mock-server.log
+
+
+/public/packs
+/public/packs-test
+/node_modules
+/yarn-error.log
+yarn-debug.log*
+.yarn-integrity
+
+.irb_history
