@@ -5,7 +5,8 @@ module Elastic
     end
 
     def search_by_description(word)
-      @client.search(q: word)["_source"]
+      @client.search(index:'books', q: word, body: { fields: [{ field: 'description' }] })['hits']['hits']
+      # @client.search(index:'books', q: word, field: 'description')['hits']['hits']
     end
   end
 end
