@@ -1,7 +1,43 @@
-<h3>Search result</h3>
+<h2>Search result</h2>
 <div>
   <%= link_to 'Back', :back %>
 </div>
-<% @results.each do |result| %>
-  <%= result %>
+<br>
+<% unless @results.empty? %>
+  <% @results.each do |result| %>
+    <h3> Title:
+      <%= result['_source']['title'] %>
+    </h3>
+    <div> Author:
+      <%= result['_source']['author'] %>
+    </div>
+    <div> Year:
+      <%= result['_source']['year'] %>
+    </div>
+    <div>
+      <span id="short-description-<%=result['_id']%>">
+        <%= result['_source']['description'].truncate_words(30) %>
+      <%= link_to '...Read more', '', id: "read-more-#{result['_id']}" %>
+      </span>
+      <span id="full-description-<%=result['_id']%>" hidden="true">
+        <%= result['_source']['description'] %>
+        <%= link_to 'Read less', '', id: "read-less-#{result['_id']}" %>
+      </span>
+      <script>
+        document.getElementById("read-more-<%= result['_id'] %>").addEventListener('click', function(e) {
+          e.preventDefault()
+          document.getElementById("short-description-<%= result['_id'] %>").hidden = true
+          document.getElementById("full-description-<%= result['_id'] %>").hidden = false
+        })
+        document.getElementById("read-less-<%= result['_id'] %>").addEventListener('click', function(e) {
+          e.preventDefault()
+          document.getElementById("full-description-<%= result['_id'] %>").hidden = true
+          document.getElementById("short-description-<%= result['_id'] %>").hidden = false
+        })
+      </script>
+    </div>
+    <hr>
+  <% end %>
+<% else %>
+  <h4> No result found &#128532;</h4>
 <% end %>

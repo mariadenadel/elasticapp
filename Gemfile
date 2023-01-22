@@ -13,6 +13,8 @@ gem 'turbolinks'
 gem 'jbuilder'
 gem 'bootsnap'
 gem 'elasticsearch'
+gem 'simple_form'
+gem 'bootstrap'
 
 group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
