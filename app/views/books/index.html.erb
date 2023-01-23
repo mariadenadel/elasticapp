@@ -1,8 +1,61 @@
-<div class="position-absolute top-50 start-50 translate-middle">
-  <%= simple_form_for :search, url: search_path, method: "GET", html: { class: 'form-inline' } do |f| %>
-    <%= f.input :q, label: 'Find a book' %>
-    <%= f.input :field, as: :radio_buttons, collection: Book::FIELDS %>
+<h3>&#128214;</h3>
+<div class="d-flex align-items-center justify-content-cente">
+  <%# <%= simple_form_for :search, url: '/', method: "GET", html: { class: 'form-group row' } do |f| %>
+  <%= form_for :search, url: '/', method: :get do |f| %>
+    <%# <%= f.input :q, label: 'Find a book(s)', input_html: { class: 'form-control' } %>
+    <%= f.label 'Find a book(s)' %>
+    <%= f.search_field :q, class: 'form-control' %>
 
+    <%= label_tag 'Search in' %>
+    <% Book::FIELDS.each do |field| %>
+      <div class="form-check">
+        <%= radio_button_tag 'search[field]', field, class: "form-check-input" %>
+        <label class="form-check-label" for="search_field_<%= field %>">
+          <%= field %>
+        </label>
+      </div>
+    <% end %>
     <%= f.submit "Search", class: "btn btn-primary" %>
   <% end %>
 </div>
+
+<br>
+<% if @results.present? %>
+  <h2>Search result</h2>
+  <% @results.each do |result| %>
+    <h3> Title:
+      <%= result['_source']['title'] %>
+    </h3>
+    <div> Author:
+      <%= result['_source']['author'] %>
+    </div>
+    <div> Year:
+      <%= result['_source']['year'] %>
+    </div>
+    <div>
+      <span id="short-description-<%=result['_id']%>">
+        <%= result['_source']['description'].truncate_words(35) %>
+      <%= link_to ' Read more', '', id: "read-more-#{result['_id']}" %>
+      </span>
+      <span id="full-description-<%=result['_id']%>" hidden="true">
+        <%= result['_source']['description'] %>
+        <%= link_to 'Read less', '', id: "read-less-#{result['_id']}" %>
+      </span>
+      <script>
+        document.getElementById("read-more-<%= result['_id'] %>").addEventListener('click', function(e) {
+          e.preventDefault()
+          document.getElementById("short-description-<%= result['_id'] %>").hidden = true
+          document.getElementById("full-description-<%= result['_id'] %>").hidden = false
+        })
+        document.getElementById("read-less-<%= result['_id'] %>").addEventListener('click', function(e) {
+          e.preventDefault()
+          document.getElementById("full-description-<%= result['_id'] %>").hidden = true
+          document.getElementById("short-description-<%= result['_id'] %>").hidden = false
+        })
+      </script>
+    </div>
+    <hr>
+  <% end %>
+<% elsif params[:search] %>
+  <h4> No result found &#128532; </h4>
+<% end %>

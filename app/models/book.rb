@@ -1,3 +1,3 @@
 class Book < ApplicationRecord
-  FIELDS = %w[title author description year].freeze
+  FIELDS = %w[title author year description].freeze
 end
